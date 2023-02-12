@@ -38,6 +38,7 @@ Note
 
 The email sending function in the send_mail_tab.py script uses Gmail to send emails. In order to use it, 
 you need to provide your Gmail username and Gmail app password in a file named personal_setting.py.
+
 Conclusion
 
 This project provides a streamlined way to create a Word document and send emails. 
