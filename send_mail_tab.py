@@ -33,7 +33,7 @@ def send_mail(to_address, name, company, attached_file):
     msg['Subject'] = f"{name} שלום "
 
     # string to store the body of the mail
-    body = "Detumate עדכון מחברת \n " \
+    body = "Drevin עדכון מחברת \n " \
            f"עבור נציג חברת {company}"
 
     # attach the body with the msg instance
