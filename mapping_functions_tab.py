@@ -15,5 +15,3 @@ def itm_to_latlon(easting, northing):
     return latitude, longitude
 
 
-lon, lat = itm_to_latlon(219000, 624000)
-print(lon, lat )

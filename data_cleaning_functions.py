@@ -1,14 +1,7 @@
 import pandas as pd
 
-def filter_df(df):
-    # Get the list of column names that don't end in "heb" or "heb "
-    df1_columns = [col for col in df.columns if not col.endswith('heb') and not col.endswith('heb ')]
 
-    # Create a new DataFrame with the selected columns
-    df1 = df[df1_columns]
 
-    # Return the new DataFrame
-    return df1
 
 
 def format_dates_2_d_m_Y(df, column_name):
@@ -16,7 +9,7 @@ def format_dates_2_d_m_Y(df, column_name):
     if not pd.api.types.is_datetime64_any_dtype(df[column_name]):
         df[column_name] = pd.to_datetime(df[column_name])
 
-    # Convert the specified column to a string in the desired format
+    # Convert the specified column to a string in the desired format "%d/%m/%Y"
     df[column_name] = df[column_name].dt.strftime("%d/%m/%Y")
 
     # Return the modified dataframe

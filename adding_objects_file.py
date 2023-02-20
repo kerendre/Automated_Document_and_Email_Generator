@@ -1,5 +1,6 @@
 # Import docx NOT python-docx
 import docx
+from docx.shared import Pt
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 
 def Add_pic(doc,pic_name,pic_description):
@@ -31,18 +32,25 @@ def Add_table(doc, df, subtitle_to_the_table):
 
     # Replace NaN values with an empty string
     df = df.fillna('')
-
-    # # Create an instance of a word document
-    # # after i have a word to change this part
-    # doc = docx.Document()
-
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     # Add a Title to the document
-    for num in range(0,9):
-        heading =doc.add_heading(subtitle_to_the_table, num)
-        heading.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    # 1.
+    # for num in range(0,6):
+    #     heading =doc.add_heading(subtitle_to_the_table, num)
+    #     heading.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
+    # 2.
+    # Set font size of table text
+
+    heading =doc.add_heading(subtitle_to_the_table, 2)
+    heading.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    for run in heading.runs:
+        run.font.color.rgb = docx.shared.RGBColor(127, 0, 0)  # dark red
+        run.font.underline = True  # underline
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     # Creating a table object
     table = doc.add_table(rows=df.shape[0] + 1, cols=df.shape[1])
+
 
     row = table.rows[0].cells
     for i in range(df.shape[1]):
@@ -64,8 +72,7 @@ def Add_table(doc, df, subtitle_to_the_table):
 
     return doc
 
-    # # Now save the document to a location
-    # doc.save('gfg.docx')
+
 
 
 
