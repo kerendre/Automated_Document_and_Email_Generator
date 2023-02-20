@@ -78,19 +78,18 @@ df = data_cleaning_functions.format_dates_2_d_m_Y(df, "third_visi")
 # Get the list of column names that don't end in "heb" or "heb "
 df = df.loc[:, ~df.columns.str.endswith(('heb', 'heb '))]
 
-df = df.drop('GIS_ID', axis=1)
-
-
+df = df.drop(['GIS_ID', 'X', 'Y'], axis=1)
 
 # Reading the contact information from another excel file into a pandas dataframe
 df_contacts = pd.read_excel(table2_origin_location_n_name, sheet_name=table2_sheet_name, skiprows=table2_number_of_rows_2_skip)
 
-
 merged_df=data_cleaning_functions.merge_data(df, df_contacts, merge_dfs_on_column)
+
+merged_df_with_no_send_mail_col=merged_df.drop('send mail', axis=1)
 
 
 # Adding the dataframe as a table to the Word document
-doc =adding_objects_file.Add_table(doc, df, subtitle_to_the_table=subtitle_to_the_table1)
+doc =adding_objects_file.Add_table(doc, merged_df_with_no_send_mail_col, subtitle_to_the_table=subtitle_to_the_table1)
 
 
 # Try to save the file as "doc1.docx"
@@ -98,12 +97,28 @@ doc_to_attach = doc.save("doc1.docx")
 
 
 # Convert the df_contacts dataframe to a list of dictionaries and send emails to each person
-dict_list = df_contacts.to_dict(orient='records')
+dict_list = merged_df.to_dict(orient='records')
 
 for num in range(0, len(dict_list)):
 
     name = dict_list[num]['name']
     mail = dict_list[num]['mail']
     company_name = dict_list[num]['municipal']
+
     # Call the send_mail function to send an email to each person in the list
+
+    to_send_a_mail = dict_list[num]['send mail']
+    if to_send_a_mail == 'V'  or to_send_a_mail == 'v':  # Only send mail if the value in send mail column value is not none.
+        send_mail_tab.send_mail(mail, name, company_name, "doc1.docx")
+
+
+
+
+
+
     #send_mail_tab.send_mail(mail, name, company_name, "doc1.docx")
+
+
+
+
+

@@ -20,6 +20,8 @@ def format_dates_2_d_m_Y(df, column_name):
 def merge_data(df, df_contact,on_column):
     # Merge the two dataframes on the "municipal" column
     merged_df = pd.merge(df, df_contact, on=on_column)
+    print("merge_df", merged_df)
+
 
     # Return the merged dataframe
     return merged_df
