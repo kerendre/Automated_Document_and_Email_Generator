@@ -17,6 +17,7 @@ def send_mail(to_address, name, company, attached_file, mail_text):
     doc (docx.Document): The Word document to which the picture is added.
     pic_name (str): The file name of the picture.
     pic_description (str): The description to be added under the picture.
+    mail_text (str): The body of the email.
 
     Returns:
     None
