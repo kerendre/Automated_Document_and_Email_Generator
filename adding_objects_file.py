@@ -3,8 +3,20 @@ import docx
 from docx.shared import Pt
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 
-def Add_pic(doc,pic_name,pic_description):
-    ''' Add pic to document'''
+
+def Add_pic(doc, pic_name, pic_description):
+
+    """
+    This function adds a picture to a Word document along with a description and spacing.
+
+    Parameters:
+    doc (docx.Document): The Word document to which the picture is added.
+    pic_name (str): The file name of the picture.
+    pic_description (str): The description to be added under the picture.
+
+    Returns:
+    None
+    """
 
     # Get the page width
     page_width = doc.sections[0].page_width
@@ -16,7 +28,7 @@ def Add_pic(doc,pic_name,pic_description):
     pic1.width = int(page_width * 0.65)
 
     # Add a description under the picture pic1
-    description_pic= doc.add_paragraph(pic_description)
+    description_pic = doc.add_paragraph(pic_description)
 
     # Center the description
     description_pic.alignment = docx.enum.text.WD_ALIGN_PARAGRAPH.CENTER
@@ -29,21 +41,36 @@ def Add_pic(doc,pic_name,pic_description):
 
 
 def Add_table(doc, df, subtitle_to_the_table):
+    """  Add a table with data from a Pandas DataFrame to a Word document.
+
+    Parameters:
+    - doc: a Word document object, created using the `docx.Document()` constructor.
+    - df: a Pandas DataFrame object containing the data to be added to the table.
+    - subtitle_to_the_table: a string representing the subtitle of the table.
+
+    Returns:
+    - the Word document object, with the table added.
+    """
 
     # Replace NaN values with an empty string
     df = df.fillna('')
+
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    # Add a Title to the document
+    # Add a Title to the document,
+    # Chose 1. showing all title options or 2. the real title
     # 1.
     # for num in range(0,6):
     #     heading =doc.add_heading(subtitle_to_the_table, num)
     #     heading.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
     # 2.
-    # Set font size of table text
+    # Add a heading to the document with the specified subtitle
+    heading = doc.add_heading(subtitle_to_the_table, 2)
 
-    heading =doc.add_heading(subtitle_to_the_table, 2)
+    # Center the heading
     heading.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+    # Add some style to the heading
     for run in heading.runs:
         run.font.color.rgb = docx.shared.RGBColor(127, 0, 0)  # dark red
         run.font.underline = True  # underline
@@ -51,7 +78,7 @@ def Add_table(doc, df, subtitle_to_the_table):
     # Creating a table object
     table = doc.add_table(rows=df.shape[0] + 1, cols=df.shape[1])
 
-
+    # Add data to the table
     row = table.rows[0].cells
     for i in range(df.shape[1]):
         row[i].text = df.columns[i]
@@ -67,16 +94,12 @@ def Add_table(doc, df, subtitle_to_the_table):
                 else:
                     row_cells[col].text = str(df.iloc[row, col])
 
-    # Adding style to a table
+    # Add style to the table
     table.style = 'Colorful List'
 
     return doc
 
 
-
-
-
-import docx
 def add_hyperlink(paragraph, url, text, color, underline):
     """
     A function that places a hyperlink within a paragraph object.
@@ -103,15 +126,15 @@ def add_hyperlink(paragraph, url, text, color, underline):
 
     # Add color if it is given
     if not color is None:
-      c = docx.oxml.shared.OxmlElement('w:color')
-      c.set(docx.oxml.shared.qn('w:val'), color)
-      rPr.append(c)
+        c = docx.oxml.shared.OxmlElement('w:color')
+        c.set(docx.oxml.shared.qn('w:val'), color)
+        rPr.append(c)
 
     # Remove underlining if it is requested
     if not underline:
-      u = docx.oxml.shared.OxmlElement('w:u')
-      u.set(docx.oxml.shared.qn('w:val'), 'none')
-      rPr.append(u)
+        u = docx.oxml.shared.OxmlElement('w:u')
+        u.set(docx.oxml.shared.qn('w:val'), 'none')
+        rPr.append(u)
 
     # Join all the xml elements together add add the required text to the w:r element
     new_run.append(rPr)
@@ -122,8 +145,6 @@ def add_hyperlink(paragraph, url, text, color, underline):
 
     return hyperlink
 
-
-import docx
 
 def add_hyperlink_to_header(document, url, text):
     """
@@ -140,8 +161,5 @@ def add_hyperlink_to_header(document, url, text):
 
     hyperlink = add_hyperlink(paragraph, url, text, 'blue', True)
 
-    return header
-
-
-
-
+    # return header
+    return hyperlink

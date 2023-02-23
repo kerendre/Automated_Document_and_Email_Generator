@@ -1,4 +1,3 @@
-
 # libraries to be imported
 import smtplib
 from email.mime.multipart import MIMEMultipart
@@ -8,8 +7,20 @@ from email import encoders
 import os
 import personal_setting
 
+
 # function to send email
-def send_mail(to_address, name, company, attached_file):
+def send_mail(to_address, name, company, attached_file, mail_text):
+    """
+    This function adds a picture to a Word document along with a description and spacing.
+
+    Parameters:
+    doc (docx.Document): The Word document to which the picture is added.
+    pic_name (str): The file name of the picture.
+    pic_description (str): The description to be added under the picture.
+
+    Returns:
+    None
+    """
 
     # get the app password from personal setting
     my_gmail_app_password = personal_setting.my_gmail_app_password
@@ -30,11 +41,11 @@ def send_mail(to_address, name, company, attached_file):
     msg['To'] = toaddr
 
     # storing the subject
-    msg['Subject'] = f"{name} שלום "
+    msg['Subject'] = f"Status of Fire Ant Infestation in Greenhouses in Israel for {name} on Behalf of {company}"
 
     # string to store the body of the mail
-    body = "Drevin עדכון מחברת \n " \
-           f"עבור נציג חברת {company}"
+    body = f"{name} Shalom \n {mail_text}" \
+
 
     # attach the body with the msg instance
     msg.attach(MIMEText(body, 'plain'))
@@ -79,4 +90,3 @@ def send_mail(to_address, name, company, attached_file):
     s.quit()
 
 # send_mail()
-
